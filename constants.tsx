@@ -67,7 +67,7 @@ export const PROJECTS: Project[] = [
     title: 'Herramienta de Facturación para busquedas de contratos 100% Autónomo',
     category: 'Ingeniería de Procesos',
     description: 'Reduje en un 80% el tiempo de búsqueda de contratos y facturación para una IPS.',
-    imageUrl: '/ConveniosApp.jpg',
+    imageUrl: 'ConveniosApp.jpg',
     technicalDetails: [
       'Arquitectura de microservicios en Python optimizada para concurrencia.',
       'Integración con APIS REST para la digitalización.',
@@ -79,7 +79,7 @@ export const PROJECTS: Project[] = [
     title: 'Asistencia de salud mental para pacientes',
     category: 'Salud Mental',
     description: 'Arya es tu compañera de bienestar: una voz amiga que te escucha sin juicios y te acompaña con sencillez en cada paso hacia tu paz interior.',
-    imageUrl: '/Arya.png',
+    imageUrl: 'Arya.png',
     technicalDetails: [
       'Motor de Empatía Basado en LLM.',
       'Visualización Biofílica de Crecimiento Orgánico',
