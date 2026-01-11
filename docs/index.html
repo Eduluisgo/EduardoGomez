@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eduardo Gómez | Soluciones Tecnológicas de Alto Impacto en Salud</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <!-- Configuración Tailwind Personalizada -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        hospital: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#3b82f6',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                            700: '#1e40af',
+                            800: '#1e3a8a',
+                            900: '#0f172a',
+                            950: '#020617'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'blob': 'blob 7s infinite',
+                        'heartbeat': 'heartbeat 2s ease-in-out infinite',
+                        'bounce-subtle': 'bounceSubtle 1.2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        heartbeat: {
+                            '0%': { transform: 'scale(1)' },
+                            '10%': { transform: 'scale(1.08)' },
+                            '20%': { transform: 'scale(1)' },
+                            '30%': { transform: 'scale(1.12)' },
+                            '45%': { transform: 'scale(1)' },
+                            '100%': { transform: 'scale(1)' }
+                        },
+                        bounceSubtle: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-6px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .text-gradient { background: linear-gradient(to right, #1e3a8a, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-pattern { background-image: radial-gradient(#e2e8f0 1px, transparent 1px); background-size: 40px 40px; }
+        /* Clases auxiliares para modales */
+        .modal-open { overflow: hidden; }
+        .modal-overlay { transition: opacity 0.3s ease-out; }
+        .modal-content { transition: all 0.3s ease-out; }
+    </style>
+</head>
+<body class="text-hospital-900 selection:bg-hospital-400 selection:text-white antialiased font-sans">
+
+    <!-- NAVBAR -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-[150] transition-all duration-300 bg-transparent py-5">
+        <div class="container mx-auto px-6 flex justify-between items-center relative z-[160]">
+            <a href="#home" class="text-xl font-extrabold tracking-tighter text-hospital-900" onclick="closeMenu()">
+                EDUARDO<span class="text-hospital-500">GOMEZ</span>
+            </a>
+            
+            <!-- Desktop Menu -->
+            <ul class="hidden md:flex items-center space-x-8">
+                <li><a href="#home" class="text-sm font-semibold text-hospital-900/60 hover:text-hospital-500 transition-colors">Solución</a></li>
+                <li><a href="#services" class="text-sm font-semibold text-hospital-900/60 hover:text-hospital-500 transition-colors">Servicios</a></li>
+                <li><a href="#portfolio" class="text-sm font-semibold text-hospital-900/60 hover:text-hospital-500 transition-colors">Proyectos</a></li>
+                <li><a href="#about" class="text-sm font-semibold text-hospital-900/60 hover:text-hospital-500 transition-colors">Garantía</a></li>
+                <li><a href="#contact" class="px-5 py-2.5 text-xs font-bold text-white bg-hospital-900 rounded-xl hover:bg-hospital-700 transition-all shadow-md">Consultoría Gratis</a></li>
+            </ul>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-btn" onclick="toggleMenu()" class="md:hidden p-2 text-hospital-900 hover:text-hospital-500 transition-colors bg-hospital-50 rounded-lg border border-hospital-100 shadow-sm">
+                <!-- Icon logic handled in JS -->
+                <svg id="icon-menu" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+                <svg id="icon-close" class="hidden w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+        </div>
+
+        <!-- Mobile Overlay -->
+        <div id="mobile-menu" class="fixed inset-0 bg-white z-[140] md:hidden transition-all duration-500 ease-in-out flex flex-col pt-24 px-6 opacity-0 -translate-y-full pointer-events-none">
+            <div class="flex flex-col space-y-4">
+                <a href="#home" onclick="closeMenu()" class="text-4xl font-black text-hospital-900 border-b border-hospital-50 pb-4 hover:text-hospital-500 transition-all">Solución</a>
+                <a href="#services" onclick="closeMenu()" class="text-4xl font-black text-hospital-900 border-b border-hospital-50 pb-4 hover:text-hospital-500 transition-all">Servicios</a>
+                <a href="#portfolio" onclick="closeMenu()" class="text-4xl font-black text-hospital-900 border-b border-hospital-50 pb-4 hover:text-hospital-500 transition-all">Proyectos</a>
+                <a href="#about" onclick="closeMenu()" class="text-4xl font-black text-hospital-900 border-b border-hospital-50 pb-4 hover:text-hospital-500 transition-all">Garantía</a>
+            </div>
+            <div class="mt-12">
+                <a href="#contact" onclick="closeMenu()" class="block w-full text-center px-10 py-5 text-xl font-bold text-white bg-hospital-900 rounded-2xl shadow-xl active:scale-95 transition-all">Agendar Diagnóstico</a>
+                <p class="mt-8 text-center text-hospital-400 text-sm font-medium uppercase tracking-widest">Consultoría Especializada</p>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- HERO -->
+        <section id="home" class="relative pt-32 pb-16 bg-white border-b border-hospital-100">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl">
+                    <span class="inline-block py-1 px-3 mb-4 text-xs font-bold tracking-widest text-hospital-600 bg-hospital-50 rounded-md border border-hospital-200">
+                        Donde la ingenieria y la salud van de la mano.
+                    </span>
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-hospital-900 leading-tight mb-6 tracking-tight">
+                        Transformo el caos de tus procesos <br/>
+                        <span class="text-hospital-500">manuales en una maquinaria digital eficiente.</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-hospital-800/80 mb-8 max-w-2xl leading-relaxed">
+                        Elimino los cuellos de botella que le hacen perder tiempo y dinero. Diseño flujos de trabajo autónomos que garantizan una operación <span class="font-bold text-hospital-900">escalable, sin errores y sin fricciones.</span>
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center gap-4">
+                        <a href="#contact" class="w-full sm:w-auto px-10 py-4 bg-hospital-900 text-white font-bold rounded-lg hover:bg-hospital-800 transition-all text-center uppercase tracking-widest text-xs">
+                            Solicitar Auditoría de Procesos
+                        </a>
+                        <div class="flex items-center gap-2 px-4 py-2 bg-green-50 rounded-full border border-green-100">
+                            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                            <span class="text-xs font-bold text-green-700 uppercase">Consultoría Abierta - 2024</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRUSTBAR -->
+        <div class="bg-hospital-900 py-12 border-y border-white/5">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-col lg:flex-row items-center justify-between gap-10">
+                    <div class="lg:max-w-md">
+                        <h3 class="text-white text-xl font-bold leading-tight mb-2">¿Por qué confiar en mi servicio?</h3>
+                        <p class="text-hospital-300 text-sm font-light">La dualidad técnica y administrativa que su institución necesita.</p>
+                    </div>
+                    <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="flex items-start gap-4">
+                            <div class="p-2 bg-hospital-400/10 rounded-lg">
+                                <svg class="w-6 h-6 text-hospital-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" /></svg>
+                            </div>
+                            <p class="text-hospital-100 text-sm leading-relaxed"><span class="block font-bold text-white mb-1">Hablo ambos idiomas</span> Entiendo los retos de los ingenieros y las prioridades de los directores médicos.</p>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="p-2 bg-hospital-400/10 rounded-lg">
+                                <svg class="w-6 h-6 text-hospital-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                            </div>
+                            <p class="text-hospital-100 text-sm leading-relaxed"><span class="block font-bold text-white mb-1">Visión de 360°</span> Conozco el software por dentro y la administración hospitalaria por fuera.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SERVICES -->
+        <section id="services" class="py-16 bg-hospital-50 border-y border-hospital-200">
+            <div class="container mx-auto px-6">
+                <div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div class="max-w-2xl">
+                        <h2 class="text-4xl font-black text-hospital-900 mb-2 tracking-tight">Especialidades Técnicas</h2>
+                        <p class="text-lg text-hospital-700/70 font-medium">Automatización de alto impacto diseñada para la continuidad operativa.</p>
+                    </div>
+                    <a href="#contact" class="text-hospital-600 font-bold hover:underline flex items-center gap-2">Consultar caso específico <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg></a>
+                </div>
+                <div id="services-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+                    <!-- JS Injected Services -->
+                </div>
+            </div>
+        </section>
+
+        <!-- PORTFOLIO -->
+        <section id="portfolio" class="py-16 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="mb-12 border-l-4 border-hospital-900 pl-6">
+                    <h2 class="text-4xl font-black text-hospital-900 mb-1 tracking-tight">Resultados Implementados</h2>
+                    <p className="text-lg text-hospital-700/60 font-medium tracking-tight">Ingeniería aplicada a problemas operativos reales.</p>
+                </div>
+                <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- JS Injected Projects -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12 lg:gap-20">
+                    <div class="w-full md:w-5/12 relative">
+                        <!-- Updated image path for static -->
+                        <img src="./1.png" alt="Eduardo Gomez" class="w-full h-auto rounded-2xl shadow-xl relative z-10 border border-hospital-100" />
+                    </div>
+                    <div class="w-full md:w-7/12">
+                        <h2 class="text-4xl font-black text-hospital-900 mb-6 leading-tight">¿Por qué confiarme sus procesos críticos?</h2>
+                        <div class="space-y-6 text-hospital-800/80 text-lg leading-relaxed">
+                            <p>La mayoría de los ingenieros se enfocan en el código. Yo me enfoco en su <strong class="text-hospital-900 font-bold underline decoration-hospital-400">cuenta de resultados</strong>.</p>
+                            <p>He dedicado años a entender la complejidad de la gestión hospitalaria y los procesos institucionales. No soy un programador más; soy un <strong class="text-hospital-900">arquitecto de soluciones</strong> que entiende que cada minuto perdido en un proceso manual es dinero que su institución deja de ganar.</p>
+                            <p>Mi compromiso es simple: entregarle sistemas que no necesiten supervisión constante para que usted pueda enfocarse en lo que realmente importa: <strong class="text-hospital-900 font-bold">crecer y servir mejor</strong>.</p>
+                            <div class="grid grid-cols-2 gap-6 pt-8">
+                                <div class="p-4 bg-hospital-50 rounded-xl border border-hospital-100">
+                                    <p class="text-3xl font-black text-hospital-600">ROI</p>
+                                    <p class="text-xs font-bold text-hospital-900 uppercase tracking-widest mt-1">Impacto Directo</p>
+                                </div>
+                                <div class="p-4 bg-hospital-50 rounded-xl border border-hospital-100">
+                                    <p class="text-3xl font-black text-hospital-600">0%</p>
+                                    <p class="text-xs font-bold text-hospital-900 uppercase tracking-widest mt-1">Error Tolerado</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
+                        <div>
+                            <h2 class="text-4xl font-extrabold text-hospital-900 mb-6 tracking-tight">Optimicemos su proceso hoy.</h2>
+                            <p class="text-xl text-hospital-800/60 font-light mb-12">Hablemos sobre cómo la automatización inteligente puede reducir sus costos operativos y elevar el estándar de atención.</p>
+                            <div class="space-y-8">
+                                <div class="flex items-center gap-5">
+                                    <div class="w-12 h-12 rounded-full bg-hospital-50 flex items-center justify-center border border-hospital-100">
+                                        <svg class="w-6 h-6 text-hospital-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold text-hospital-400 uppercase tracking-widest">Ubicación</p>
+                                        <span class="text-lg font-bold text-hospital-900">Cartagena de Indias / Remoto Global</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-hospital-50 p-10 rounded-2xl border border-hospital-100 shadow-xl">
+                             <!-- Success UI (Hidden by default) -->
+                             <div id="contact-success" class="hidden text-center">
+                                <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8 animate-heartbeat">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-10 h-10"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                                </div>
+                                <h2 class="text-4xl font-extrabold text-hospital-900 mb-4">¡Solicitud Enviada!</h2>
+                                <p class="text-xl text-hospital-800/60 mb-8">Gracias por confiar en mi experiencia. Me pondré en contacto con usted pronto para agendar nuestro diagnóstico preliminar.</p>
+                                <button onclick="resetForm()" class="px-8 py-3 bg-hospital-900 text-white font-bold rounded-lg hover:bg-hospital-800 transition-all focus:ring-4 focus:ring-hospital-400/50">Enviar otro mensaje</button>
+                             </div>
+
+                             <!-- Form -->
+                            <form id="contact-form" class="space-y-6" onsubmit="handleContactSubmit(event)">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="space-y-2">
+                                        <label class="block text-xs font-bold text-hospital-900 uppercase tracking-wider">Nombre</label>
+                                        <input type="text" name="name" required class="w-full px-4 py-3 bg-white border border-hospital-200 focus:ring-hospital-400 rounded-lg focus:ring-2 outline-none transition-all" placeholder="Su nombre">
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="block text-xs font-bold text-hospital-900 uppercase tracking-wider">Institución</label>
+                                        <input type="text" name="institution" required class="w-full px-4 py-3 bg-white border border-hospital-200 focus:ring-hospital-400 rounded-lg focus:ring-2 outline-none transition-all" placeholder="Nombre del hospital o clínica">
+                                    </div>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="block text-xs font-bold text-hospital-900 uppercase tracking-wider">Email Profesional</label>
+                                    <input type="email" name="email" required class="w-full px-4 py-3 bg-white border border-hospital-200 focus:ring-hospital-400 rounded-lg focus:ring-2 outline-none transition-all" placeholder="email@institucion.com">
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="block text-xs font-bold text-hospital-900 uppercase tracking-wider">Desafío Principal</label>
+                                    <textarea name="challenge" rows="4" required placeholder="Cuéntenos brevemente su necesidad operativa..." class="w-full px-4 py-3 bg-white border border-hospital-200 focus:ring-hospital-400 rounded-lg focus:ring-2 outline-none transition-all resize-none"></textarea>
+                                </div>
+                                <div id="form-error" class="hidden p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm"></div>
+                                <button type="submit" id="submit-btn" class="w-full py-4 bg-hospital-400 text-white font-bold rounded-lg hover:bg-hospital-900 transition-all shadow-lg flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed">
+                                    <span id="btn-text">Solicitar Diagnóstico Preliminar</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-20 bg-hospital-950 text-center">
+        <div class="container mx-auto px-6">
+            <div class="mb-12">
+                <a href="#home" class="text-3xl font-black text-white tracking-tighter">EDUARDO<span class="text-hospital-400">GOMEZ</span></a>
+            </div>
+            <p class="text-hospital-400/40 text-sm font-medium tracking-widest uppercase">© <span id="year"></span> Diseño de Alto Impacto • Ingeniería & Salud</p>
+        </div>
+    </footer>
+
+    <!-- SHARED MODAL COMPONENT (Reused for both Services and Projects) -->
+    <div id="modal-container" class="relative z-[200] hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-hospital-950/60 backdrop-blur-md transition-opacity opacity-0" id="modal-backdrop"></div>
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+                <div id="modal-panel" class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
+                    <div id="modal-content"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // DATA
+        const SERVICES = [
+            { id: 1, title: 'Automatización de Facturación y Glosas', description: 'Elimine las fugas de dinero. Automatizo la conciliación de cuentas y la detección de glosas antes de que ocurran.', fullDetails: ['Validación automática de RIPS y facturación electrónica.', 'Sistemas de alerta temprana para auditoría médica.', 'Integración directa con pasarelas de pago y ERPs.', 'Reportes de rentabilidad en tiempo real por servicio.'], icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.546 1.16 3.74.324 3.74-1.39V9.182c0-1.714-2.194-2.55-3.74-1.39l-.879.659m7.5 0a4.875 4.875 0 11-9.75 0 4.875 4.875 0 019.75 0z" /></svg>' },
+            { id: 2, title: 'Control Autónomo de Inventarios', description: 'Cero faltantes, cero desperdicios. Implemento sistemas que gestionan sus suministros críticos por usted.', fullDetails: ['Predicción de demanda basada en historial clínico.', 'Automatización de pedidos a proveedores con firma digital.', 'Control de caducidad y trazabilidad de alto costo.', 'Optimización de espacio y rotación de activos.'], icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>' },
+            { id: 3, title: 'Admisión Digital y Autoservicio', description: 'Recupere el tiempo de su personal. Automatizo el ingreso del paciente desde la cita hasta el consultorio.', fullDetails: ['Kioscos de admisión y validación de derechos automática.', 'Agendamiento inteligente que reduce el ausentismo.', 'Telemedicina integrada con flujo de facturación directa.', 'Encuestas de satisfacción y NPS automatizados.'], icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' }
+        ];
+
+        const PROJECTS = [
+            { id: 1, title: 'Herramienta de Facturación para busquedas de contratos 100% Autónomo', category: 'Ingeniería de Procesos', description: 'Reduje en un 80% el tiempo de búsqueda de contratos y facturación para una IPS.', imageUrl: './ConveniosApp.jpg', technicalDetails: ['Arquitectura de microservicios en Python optimizada para concurrencia.', 'Integración con APIS REST para la digitalización.', 'Implementación Homologador de codigos segun las actualizaciones del ministerio de salud.'] },
+            { id: 2, title: 'Asistencia de salud mental para pacientes', category: 'Salud Mental', description: 'Arya es tu compañera de bienestar: una voz amiga que te escucha sin juicios y te acompaña con sencillez en cada paso hacia tu paz interior.', imageUrl: './Arya.png', technicalDetails: ['Motor de Empatía Basado en LLM.', 'Visualización Biofílica de Crecimiento Orgánico', 'Arquitectura "Local-First" con Cifrado Simétrico', 'Motor de Orquestación de Cuidado Circadiano'] }
+        ];
+
+        // INIT EMAILJS
+        (function() {
+            emailjs.init("tph_BolMFul_K_hB2"); // Public Key
+        })();
+
+        // RENDER SERVICES
+        const servicesGrid = document.getElementById('services-grid');
+        servicesGrid.innerHTML = SERVICES.map(s => `
+            <div class="bg-white p-8 rounded-2xl border border-hospital-200 hover:border-hospital-500 transition-all duration-300 group flex flex-col h-full">
+                <div class="w-14 h-14 bg-hospital-50 text-hospital-600 rounded-xl flex items-center justify-center mb-6 group-hover:bg-hospital-600 group-hover:text-white transition-colors">${s.icon}</div>
+                <h3 class="text-xl font-bold text-hospital-900 mb-3">${s.title}</h3>
+                <p class="text-hospital-700/70 text-base mb-6 flex-grow">${s.description}</p>
+                <button onclick="openServiceModal(${s.id})" class="mt-auto inline-flex items-center gap-2 text-hospital-900 font-bold text-xs uppercase tracking-widest hover:text-hospital-600 transition-colors">
+                    Auditar este flujo <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                </button>
+            </div>
+        `).join('');
+
+        // RENDER PORTFOLIO
+        const portfolioGrid = document.getElementById('portfolio-grid');
+        portfolioGrid.innerHTML = PROJECTS.map(p => `
+            <div class="group overflow-hidden rounded-2xl border border-hospital-100 bg-hospital-50 hover:bg-white hover:shadow-2xl transition-all duration-500">
+                <div class="relative h-64 overflow-hidden">
+                    <img src="${p.imageUrl}" alt="${p.title}" class="w-full h-full object-cover grayscale-[50%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105">
+                    <div class="absolute top-4 left-4"><span class="px-3 py-1 bg-white/90 backdrop-blur-sm text-hospital-900 text-[10px] font-black rounded-md uppercase tracking-widest border border-hospital-200">${p.category}</span></div>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold text-hospital-900 mb-3 group-hover:text-hospital-600 transition-colors">${p.title}</h3>
+                    <p class="text-hospital-700 text-base leading-relaxed mb-6 font-medium">${p.description}</p>
+                    <button onclick="openProjectModal(${p.id})" class="flex items-center gap-2 text-hospital-900 font-black text-xs uppercase tracking-[0.15em] group-hover:gap-4 transition-all hover:text-hospital-600 outline-none focus:ring-2 focus:ring-hospital-400 rounded-sm">
+                        Ver Detalle Técnico <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                    </button>
+                </div>
+            </div>
+        `).join('') + `
+            <div class="rounded-2xl border-2 border-dashed border-hospital-200 bg-hospital-50/50 flex flex-col items-center justify-center p-8 text-center h-full min-h-[400px] hover:border-hospital-300 hover:bg-hospital-50 transition-all group cursor-help">
+                <div class="w-16 h-16 bg-hospital-100 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <svg class="w-8 h-8 text-hospital-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                </div>
+                <h3 class="text-xl font-black text-hospital-900 mb-2">+5 Proyectos Confidenciales</h3>
+                <p class="text-hospital-600/70 font-medium text-sm max-w-xs mx-auto mb-6">Desarrollos de alto impacto protegidos por acuerdos de no divulgación (NDA) en el sector asegurador y farmacéutico.</p>
+                <span class="text-xs font-bold text-hospital-400 bg-white px-4 py-2 rounded-full border border-hospital-100 shadow-sm uppercase tracking-widest">Consultar en Reunión Privada</span>
+            </div>
+        `;
+
+        // FOOTER YEAR
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // NAVBAR LOGIC
+        const navbar = document.getElementById('navbar');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const iconMenu = document.getElementById('icon-menu');
+        const iconClose = document.getElementById('icon-close');
+        let isMenuOpen = false;
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20 || isMenuOpen) {
+                navbar.classList.remove('bg-transparent', 'py-5');
+                navbar.classList.add('bg-white', 'py-3', 'shadow-md', 'border-b', 'border-hospital-100');
+            } else {
+                navbar.classList.add('bg-transparent', 'py-5');
+                navbar.classList.remove('bg-white', 'py-3', 'shadow-md', 'border-b', 'border-hospital-100');
+            }
+        });
+
+        function toggleMenu() {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                document.body.style.overflow = 'hidden';
+                mobileMenu.classList.remove('opacity-0', '-translate-y-full', 'pointer-events-none');
+                mobileMenu.classList.add('opacity-100', 'translate-y-0');
+                iconMenu.classList.add('hidden');
+                iconClose.classList.remove('hidden');
+                navbar.classList.add('bg-white', 'py-3');
+            } else {
+                closeMenu();
+            }
+        }
+
+        function closeMenu() {
+            isMenuOpen = false;
+            document.body.style.overflow = 'unset';
+            mobileMenu.classList.add('opacity-0', '-translate-y-full', 'pointer-events-none');
+            mobileMenu.classList.remove('opacity-100', 'translate-y-0');
+            iconMenu.classList.remove('hidden');
+            iconClose.classList.add('hidden');
+            if (window.scrollY <= 20) {
+                navbar.classList.add('bg-transparent', 'py-5');
+                navbar.classList.remove('bg-white', 'py-3');
+            }
+        }
+
+        // MODAL LOGIC
+        const modalContainer = document.getElementById('modal-container');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalPanel = document.getElementById('modal-panel');
+        const modalContent = document.getElementById('modal-content');
+
+        function openModal(html) {
+            modalContent.innerHTML = html;
+            modalContainer.classList.remove('hidden');
+            setTimeout(() => {
+                modalBackdrop.classList.remove('opacity-0');
+                modalPanel.classList.remove('opacity-0', 'translate-y-4', 'scale-95');
+                modalPanel.classList.add('opacity-100', 'translate-y-0', 'scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            modalBackdrop.classList.add('opacity-0');
+            modalPanel.classList.add('opacity-0', 'translate-y-4', 'scale-95');
+            modalPanel.classList.remove('opacity-100', 'translate-y-0', 'scale-100');
+            setTimeout(() => {
+                modalContainer.classList.add('hidden');
+            }, 300);
+        }
+
+        modalBackdrop.addEventListener('click', closeModal);
+
+        function openServiceModal(id) {
+            const s = SERVICES.find(x => x.id === id);
+            openModal(`
+                <div class="p-6 border-b border-hospital-100 flex justify-between items-center bg-hospital-900 text-white">
+                    <h3 class="text-xl font-bold">${s.title}</h3>
+                    <button onclick="closeModal()" class="text-white/60 hover:text-white"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
+                </div>
+                <div class="p-8">
+                    <p class="text-xs font-bold text-hospital-400 uppercase tracking-widest mb-4">Puntos de Optimización:</p>
+                    <ul class="space-y-3">
+                        ${s.fullDetails.map(d => `<li class="flex items-start gap-3 text-hospital-800 font-medium text-sm"><span class="w-1.5 h-1.5 bg-hospital-500 rounded-full mt-1.5 flex-shrink-0"></span>${d}</li>`).join('')}
+                    </ul>
+                    <button onclick="closeModal()" class="w-full mt-8 py-3 bg-hospital-100 text-hospital-900 font-bold rounded-lg hover:bg-hospital-200 transition-all">Cerrar Detalles</button>
+                </div>
+            `);
+        }
+
+        function openProjectModal(id) {
+            const p = PROJECTS.find(x => x.id === id);
+            openModal(`
+                <div class="relative h-48 sm:h-64">
+                    <img src="${p.imageUrl}" alt="${p.title}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-hospital-900/90 to-transparent flex flex-col justify-end p-8">
+                        <span class="text-hospital-400 text-xs font-bold tracking-widest uppercase mb-2">${p.category}</span>
+                        <h3 class="text-2xl sm:text-3xl font-black text-white leading-tight">${p.title}</h3>
+                    </div>
+                    <button onclick="closeModal()" class="absolute top-4 right-4 p-2 bg-black/20 text-white hover:bg-black/40 rounded-full transition-colors backdrop-blur-sm"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
+                </div>
+                <div class="p-8 sm:p-10">
+                    <div class="mb-8">
+                        <h4 class="text-sm font-bold text-hospital-900 uppercase tracking-widest mb-3 border-l-4 border-hospital-400 pl-3">Impacto De Negocio</h4>
+                        <p class="text-hospital-700 text-lg leading-relaxed font-medium">${p.description}</p>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-hospital-900 uppercase tracking-widest mb-4 border-l-4 border-hospital-400 pl-3">Stack Tecnológico & Estrategia</h4>
+                        <ul class="grid grid-cols-1 gap-4">
+                            ${p.technicalDetails.map(d => `
+                                <li class="flex items-start gap-4 p-4 rounded-xl bg-hospital-50 border border-hospital-100 hover:border-hospital-200 transition-colors">
+                                    <div class="p-2 bg-white rounded-lg text-hospital-400 shadow-sm"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg></div>
+                                    <span class="text-hospital-800 font-medium text-sm leading-relaxed mt-1">${d}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                    <div class="mt-10 pt-6 border-t border-hospital-100 flex justify-end">
+                        <button onclick="closeModal()" class="px-8 py-3 bg-hospital-900 text-white font-bold rounded-lg hover:bg-hospital-800 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">Entendido</button>
+                    </div>
+                </div>
+            `);
+        }
+
+        // CONTACT FORM LOGIC
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            const btn = document.getElementById('submit-btn');
+            const btnText = document.getElementById('btn-text');
+            const formError = document.getElementById('form-error');
+
+            const serviceID = 'service_bn2gmpq';
+            const templateID = 'template_jeby4k8';
+
+            btn.disabled = true;
+            btnText.innerHTML = '<svg class="animate-spin h-5 w-5 text-white inline mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Procesando...';
+
+            emailjs.sendForm(serviceID, templateID, form)
+                .then(() => {
+                    document.getElementById('contact-form').classList.add('hidden');
+                    document.getElementById('contact-success').classList.remove('hidden');
+                    form.reset();
+                }, (err) => {
+                    btn.disabled = false;
+                    btnText.textContent = 'Solicitar Diagnóstico Preliminar';
+                    formError.textContent = 'Error al enviar: ' + JSON.stringify(err);
+                    formError.classList.remove('hidden');
+                });
+        }
+
+        function resetForm() {
+            document.getElementById('contact-success').classList.add('hidden');
+            document.getElementById('contact-form').classList.remove('hidden');
+            document.getElementById('submit-btn').disabled = false;
+            document.getElementById('btn-text').textContent = 'Solicitar Diagnóstico Preliminar';
+        }
+    </script>
+</body>
+</html>
