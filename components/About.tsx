@@ -9,7 +9,7 @@ const About: React.FC = () => {
           <div className="w-full md:w-5/12 relative">
             {/* Marco decorativo eliminado para una estética más limpia */}
             <img
-              src="/1.png"
+              src="./1.png"
               alt="Eduardo Gomez"
               className="w-full h-auto rounded-2xl shadow-xl relative z-10 border border-hospital-100"
             />

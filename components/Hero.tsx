@@ -28,7 +28,7 @@ const Hero: React.FC = () => {
             </a>
             <div className="flex items-center gap-2 px-4 py-2 bg-green-50 rounded-full border border-green-100">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              <span className="text-xs font-bold text-green-700 uppercase">Consultoría Abierta - 2024</span>
+              <span className="text-xs font-bold text-green-700 uppercase">Consultoría Abierta - 2026</span>
             </div>
           </div>
         </div>
