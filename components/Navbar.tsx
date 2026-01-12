@@ -38,7 +38,7 @@ const Navbar: React.FC = () => {
             className="text-xl font-extrabold tracking-tighter text-hospital-900"
             onClick={() => setIsMenuOpen(false)}
           >
-            EDUARDO<span className="text-hospital-500">GOMEZ</span>
+            GOM<span className="text-hospital-500">CODE</span>
           </a>
 
           {/* Desktop Navigation */}
