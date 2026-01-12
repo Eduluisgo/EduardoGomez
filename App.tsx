@@ -25,7 +25,7 @@ const App: React.FC = () => {
         <div className="container mx-auto px-6">
           <div className="mb-12">
             <a href="#home" className="text-3xl font-black text-white tracking-tighter">
-              EDUARDO<span className="text-hospital-400">GOMEZ</span>
+              GOM<span className="text-hospital-400">CODE</span>
             </a>
           </div>
           <p className="text-hospital-400/40 text-sm font-medium tracking-widest uppercase">
